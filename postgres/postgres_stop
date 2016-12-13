@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo 'stopping postgresql'
+pg_ctl stop

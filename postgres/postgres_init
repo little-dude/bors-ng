@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -e
+
+echo "creating the database"
+initdb --no-locale --encoding=UTF-8 --pgdata "$PGDATA"
+
+echo "starting postgres"
+postgres_start
+
+echo "creating $(whoami) user"
+createuser "$(whoami)" --createdb
