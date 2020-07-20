@@ -18,6 +18,7 @@ defmodule BorsNG.Database.Repo do
     config =
       case config[:url] do
         _ when no_host ->
+          IO.inspect(config)
           config
 
         "postgresql://postgres:Postgres1234@localhost/bors_dev" ->

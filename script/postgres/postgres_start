@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+set -e
+
+  echo $MIX_ARCHIVES
+  echo $PGDIR
+  echo $PGHOST
+  echo $PGDATA
+  echo $PGLOG
+
+if ! postgres_is_running; then
+    echo 'starting postgresql'
+    set -x
+    pg_ctl start \
+        -l "$PGLOG" \
+        -o "-c listen_addresses= -c unix_socket_directories=$PGDIR"
+else
+    echo 'postgresql is already running, use postgres_restart to restart it'
+fi
+
+echo "connect to postgres with 'psql -U $(whoami) -d postgres'"
+
+# https://coderwall.com/p/c3wyzq/forwarding-tcp-traffic-to-a-unix-socket
+#
+#     * "-d -d" => prints fatal, error, warning, and notice messages
+#
+#     * "TCP4-LISTEN:15432" => listens on 15432, accepts a TCP/IP
+#       connection and only supports IPv4 protocol
+#
+#     * "fork" => forks a new child process for each connection
+#
+#     * "UNIX_CONNECT" => connects to filename assuming it is a UNIX
+#       domain socket
+sock_file="$(find $PGDIR -name '.s.PGSQL.*'  -not -name '*.lock')"
+nohup socat -d -d TCP4-LISTEN:5432,fork UNIX-CONNECT:"$sock_file" &

@@ -40,7 +40,8 @@ config :phoenix, :stacktrace_depth, 20
 
 config :bors, BorsNG.Database.Repo,
   adapter: Ecto.Adapters.Postgres,
-  url: {:system, "DATABASE_URL", "postgresql://postgres:Postgres1234@localhost/bors_dev"},
+  database: "bors_dev",
+  socket_dir: System.get_env("PGDIR"),
   pool_size: 10
 
 # On developer boxes, we do not actually talk to GitHub.

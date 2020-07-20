@@ -13,8 +13,8 @@ case System.get_env("BORS_TEST_DATABASE") do
   _ ->
     config :bors, BorsNG.Database.Repo,
       adapter: Ecto.Adapters.Postgres,
-      url:
-        {:system, "DATABASE_URL_TEST", "postgresql://postgres:Postgres1234@localhost/bors_test"},
+      database: "bors_test",
+      socket_dir: System.get_env("PGDIR"),
       pool: Ecto.Adapters.SQL.Sandbox
 end
 

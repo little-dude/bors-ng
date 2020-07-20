@@ -25,3 +25,5 @@ erl_crash.dump
 /*.iml
 /projectFilesBackup
 /projectFilesBackup1
+
+/.postgres/
